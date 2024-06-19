@@ -1,0 +1,49 @@
+12:26:27 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Blink_led.elf" @"objects.list"   -mcpu=cortex-m4 -T"/home/pc/Desktop/projet_Stm32/Blink_led/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Blink_led.elf
+ 
+arm-none-eabi-size  Blink_led.elf 
+arm-none-eabi-objdump -h -S Blink_led.elf  > "Blink_led.list"
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
+Finished building: Blink_led.list
+ 
+12:27:09 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-size  Blink_led.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
+12:27:18 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-size  Blink_led.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
+12:27:27 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-size  Blink_led.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
+12:27:58 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-size  Blink_led.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
+12:32:32 **** Incremental Build of configuration Debug for project Blink_led ****
+make -j16 all 
+arm-none-eabi-size  Blink_led.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6052	     20	   1572	   7644	   1ddc	Blink_led.elf
+Finished building: default.size.stdout
+ 
