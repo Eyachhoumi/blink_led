@@ -1,0 +1,32 @@
+2024-06-20 11:49:29,054 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 329934192 Bytes (741343232)
+2024-06-20 11:49:30,330 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 370828656 Bytes (741343232)
+2024-06-20 11:49:31,345 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 426925424 Bytes (741343232)
+2024-06-20 11:49:31,426 [INFO] BlockDiagram:2759 - set Specific Code input for plugin: SYS
+2024-06-20 11:49:31,426 [INFO] BlockDiagram:2759 - set Specific Code input for plugin: RCC
+2024-06-20 11:49:31,426 [INFO] BlockDiagram:2759 - set Specific Code input for plugin: NVIC
+2024-06-20 11:49:31,427 [INFO] BlockDiagram:2759 - set Specific Code input for plugin: GPIO
+2024-06-20 11:49:31,427 [INFO] CodeGenerator:807 - code generatio: config db path: /opt/st/stm32cubeide_1.14.0/plugins/com.st.stm32cube.common.mx_6.10.0.202311202037//db/
+2024-06-20 11:49:31,497 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/license.tmp_save
+2024-06-20 11:49:31,572 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/license.tmp
+2024-06-20 11:49:31,579 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/gpio.tmp_save
+2024-06-20 11:49:31,635 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/gpio.tmp
+2024-06-20 11:49:31,645 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/stm32f4xx_it.c_save
+2024-06-20 11:49:31,812 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/stm32f4xx_it.c
+2024-06-20 11:49:31,815 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/stm32f4xx_it.h_save
+2024-06-20 11:49:31,862 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/stm32f4xx_it.h
+2024-06-20 11:49:31,864 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/stm32f4xx_hal_msp.c_save
+2024-06-20 11:49:31,936 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/stm32f4xx_hal_msp.c
+2024-06-20 11:49:31,938 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/system.tmp_save
+2024-06-20 11:49:31,973 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/MXTmpFiles/system.tmp
+2024-06-20 11:49:31,974 [INFO] CodeEngine:311 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/stm32f4xx_hal_conf.h_save
+2024-06-20 11:49:32,012 [INFO] CodeEngine:335 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/stm32f4xx_hal_conf.h
+2024-06-20 11:49:32,026 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/main.h_save
+2024-06-20 11:49:32,077 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Inc/main.h
+2024-06-20 11:49:32,078 [INFO] CodeEngine:255 - oldGeneratedFile, /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/main.c_save
+2024-06-20 11:49:32,141 [INFO] CodeEngine:279 - Generated code: /home/pc/Desktop/projet_Stm32/Blink_led/Core/Src/main.c
+2024-06-20 11:49:32,447 [INFO] ProjectBuilder:3076 - Time for Copy HAL[1] : 12mS.
+2024-06-20 11:49:32,449 [INFO] ProjectBuilder:4485 - Project Generator version: 4.2.0-B44
+2024-06-20 11:49:32,632 [INFO] ConfigFileManager:1495 - The Die is : DIE413
+2024-06-20 11:49:33,310 [INFO] ProjectBuilder:4747 - Time for Generating toolchain IDE Files: 860mS.
+2024-06-20 11:49:33,310 [INFO] ProjectBuilder:2947 - Time for Copy CMSIS : 0mS.
+2024-06-20 11:49:33,310 [INFO] ProjectBuilder:2947 - Time for Copy CMSIS : 0mS.

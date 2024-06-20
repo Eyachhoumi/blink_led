@@ -31,15 +31,14 @@ endif
 OPTIONAL_TOOL_DEPS := \
 $(wildcard ../makefile.defs) \
 $(wildcard ../makefile.init) \
-$(wildcard ../makefile.targets) \
-
+$(wildcard ../makefile.targets)
 
 BUILD_ARTIFACT_NAME := Blink_led
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
-# Add inputs and outputs from these tool invocations to the build variables 
+# Add inputs and outputs from these tool invocations to the build variables
 EXECUTABLES += \
 Blink_led.elf \
 
@@ -52,9 +51,8 @@ default.size.stdout \
 OBJDUMP_LIST += \
 Blink_led.list \
 
-
 # All Target
-all: main-build
+all: main-build Blink_led.bin
 
 # Main-build Target
 main-build: Blink_led.elf secondary-outputs
@@ -75,7 +73,9 @@ Blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+# Convert .elf to .bin
 Blink_led.bin: Blink_led.elf
+	@echo 'Invoking: ARM GNU Create Flash Image'
 	arm-none-eabi-objcopy -O binary "Blink_led.elf" "Blink_led.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
@@ -85,7 +85,7 @@ clean:
 	-$(RM) Blink_led.elf Blink_led.list Blink_led.map default.size.stdout Blink_led.bin
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) Blink_led.bin
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
@@ -94,5 +94,7 @@ fail-specified-linker-script-missing:
 warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
-.PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified secondary-outputs
+.PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
+
+-include ../makefile.targets
 
