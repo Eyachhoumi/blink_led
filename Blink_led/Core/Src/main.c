@@ -1,81 +1,105 @@
 /* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "esp01_drive.h" // Bibliothèque pour le module WiFi ESP-01
-#include "MQTTPacket.h" // Bibliothèque pour le client MQTT
+#include "base64.h"
+#include "stm32f4xx_hal.h"
+#include "wifi_esp01.h"
+#include "mqtt_client.h"
 
-// Définition des identifiants et mots de passe WiFi
-#define WIFI_SSID     "Didi"
-#define WIFI_PASSWORD "hadil123"
-
-// Définition des informations du broker MQTT
-#define MQTT_BROKER_ADDRESS    "test.mosquitto.org"
-#define MQTT_CLIENT_ID         "1883"
-#define MQTT_TOPIC "/firmware/blink_led.bin"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-// Déclaration des fonctions WiFi et MQTT
-// Variables globales pour la gestion du WiFi et MQTT
-// Variables globales pour la gestion du WiFi et MQTT
-//extern WiFi_Status_t wifi_init(const char *ssid, const char *password); // Déclaration de la fonction WiFi
-//extern MQTT_Status_t MQTT_Connect(const char *broker_address, const char *client_id); // Déclaration de la fonction MQTT
-
-WiFi_Status_t wifi_status;
-MQTT_Status_t mqtt_status;
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define MAX_BASE64_SIZE 1024
+#define WIFI_SSID       "Didi"
+#define WIFI_PASSWORD   "hadil123"
+#define MQTT_BROKER     "test.mosquitto.org"
+#define MQTT_PORT       1883
+#define MQTT_TOPIC      "/firmware/blink_led.bin"
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static MQTTClient mqtt_client;
+
+void wifi_setup() {
+    // Initialisation et connexion au WiFi
+    wifi_init(WIFI_SSID, WIFI_PASSWORD);
+    wifi_connect();
+}
+
+void mqtt_setup() {
+    // Initialisation du client MQTT
+    mqtt_init(&mqtt_client, MQTT_BROKER, MQTT_PORT);
+    mqtt_connect(&mqtt_client);
+
+    // Abonnement à un sujet MQTT pour recevoir des messages
+    mqtt_subscribe(&mqtt_client, MQTT_TOPIC, mqtt_message_callback);
+}
+
+void mqtt_message_callback(char *topic, uint8_t *payload, uint32_t length) {
+    // Callback appelée lorsqu'un message MQTT est reçu
+    // Vous pouvez implémenter ici votre logique de traitement des messages reçus
+    printf("Received MQTT message on topic '%s': %.*s\n", topic, (int)length, (char *)payload);
+    // Exemple : décodage base64 si nécessaire
+    uint8_t bin_data[length];
+    int bin_size = base64_decode(bin_data, (char *) payload);
+    // Utilisez les données binaires ici
+}
 /* USER CODE BEGIN PFP */
-void JumpToApplication2(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-// Fonction d'initialisation du WiFi
+void decode_base64_data(char *base64_data) {
+    // Allouer de la mémoire pour les données décodées
+    size_t base64_len = strlen(base64_data);
+    size_t bin_size = base64_decoded_size(base64_len);
+    uint8_t *bin_data = malloc(bin_size);
+    if (bin_data == NULL) {
+        // Gestion des erreurs de mémoire
+        return;
+    }
 
+    // Décodez les données base64 en binaire
+    int result = base64_decode(bin_data, base64_data);
+    if (result < 0) {
+        // Gestion des erreurs de décodage
+        free(bin_data);
+        return;
+    }
+
+    // Utilisez les données binaires décodées ici
+
+    // Libérez la mémoire allouée
+    free(bin_data);
+}
+
+// Exemple de réception de données base64 (simulation)
+void receive_base64_data(char *base64_data) {
+    // Supposons que base64_data est reçu via MQTT
+    decode_base64_data(base64_data);
+}
 /* USER CODE END 0 */
 
 /**
@@ -85,15 +109,22 @@ void JumpToApplication2(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  HAL_Init();
+  wifi_setup();
+    mqtt_setup();
+
+
+
+        // Boucle principale
+        // Ici, vous pouvez gérer d'autres tâches ou dormir si nécessaire
 
   /* USER CODE BEGIN Init */
+  // Simulation de réception de données base64
 
   /* USER CODE END Init */
 
@@ -101,75 +132,30 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  // Initialisation du WiFi
-  WiFi_Status_t esp_init(const char *ssid, const char *password);
-
-      //wifi_status= esp_init (WIFI_SSID, WIFI_PASSWORD);
-      if (wifi_status == WiFi_OK) {
-          printf("WiFi connecté avec succès.\n");
-
-          // Connexion au broker MQTT
-          MQTT_Status_t MQTT_Connect(const char *broker_address, const char *client_id);
-
-          //mqtt_status = MQTT_Connect(MQTT_BROKER_ADDRESS, MQTT_CLIENT_ID);
-          if (mqtt_status == MQTT_OK) {
-              printf("Connexion MQTT réussie.\n");
-
-              // Publication d'un message
-              const char *message = "Hello MQTT!";
-              MQTT_Status_t MQTT_Subscribe(const char *topic);
-
-              //mqtt_status = MQTT_Publish(MQTT_TOPIC, message);
-              if (mqtt_status == MQTT_OK) {
-                  printf("Message publié avec succès.\n");
-
-                  // Effectuez d'autres opérations MQTT ici si nécessaire
-
-                  // Déconnexion du broker MQTT
-                  MQTT_Status_t MQTT_Disconnect(void);
-
-                 //mqtt_status = MQTT_Disconnect();
-                  if (mqtt_status == MQTT_OK) {
-                      printf("Déconnexion MQTT réussie.\n");
-                  } else {
-                      printf("Échec de la déconnexion MQTT.\n");
-                  }
-              } else {
-                  printf("Échec de la publication du message MQTT.\n");
-              }
-          } else {
-              printf("Échec de la connexion MQTT.\n");
-          }
-      } else {
-          printf("Erreur de connexion WiFi.\n");
-      }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1) {
+     	 HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+
+     	    	      	HAL_Delay(5000);
+     	  char received_base64[MAX_BASE64_SIZE] = "SGVsbG8gV29ybGQ=";
+     	      receive_base64_data(received_base64);
+
+     	      return 0;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
-    HAL_Delay(500);
-
-    // Ajoutez une condition pour sauter à l'application 2 ici
-    // par exemple, après un certain délai ou un événement spécifique
-    HAL_Delay(5000); // délai de 10 secondes
-    JumpToApplication2();
-  }
   /* USER CODE END 3 */
 }
-
+}
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -224,11 +210,9 @@ static void MX_USART2_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART2_Init 0 */
-
   /* USER CODE END USART2_Init 0 */
 
   /* USER CODE BEGIN USART2_Init 1 */
-
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 115200;
@@ -243,7 +227,6 @@ static void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
   /* USER CODE END USART2_Init 2 */
 
 }
@@ -265,10 +248,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PD13 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  /*Configure GPIO pins : PD12 PD13 PD14 PD15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -279,41 +262,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-void deinitEverything()
-{
-    __HAL_RCC_GPIOC_CLK_DISABLE();
-    __HAL_RCC_GPIOD_CLK_DISABLE();
-    __HAL_RCC_GPIOB_CLK_DISABLE();
-    __HAL_RCC_GPIOA_CLK_DISABLE();
-    HAL_RCC_DeInit();
-    HAL_DeInit();
-    SysTick->CTRL = 0;
-    SysTick->LOAD = 0;
-    SysTick->VAL = 0;
-}
-
-void JumpToApplication2(void)
-{
-    uint32_t appAddress2 = 0x08084000;  // Adresse de démarrage de l'application 2 en Flash
-    typedef void (*pFunction)(void);
-    pFunction JumpToApp2;
-    uint32_t JumpAddress2 = *(__IO uint32_t*)(appAddress2 + 4);
-    JumpToApp2 = (pFunction)JumpAddress2;
-
-    // Désactivation des interruptions
-    __disable_irq();
-
-    // Réinitialisation des périphériques
-    deinitEverything();
-
-    // Réinitialisation du pointeur de pile
-    __set_MSP(*(__IO uint32_t*)appAddress2);
-
-    // Saut vers l'application 2
-    JumpToApp2();
-}
-
 /* USER CODE END 4 */
 
 /**
@@ -323,11 +271,6 @@ void JumpToApplication2(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -342,8 +285,6 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
