@@ -34,34 +34,37 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := testrecep
+BUILD_ARTIFACT_NAME := blink_led
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-testrecep.elf \
+blink_led.elf \
 
 MAP_FILES += \
-testrecep.map \
+blink_led.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-testrecep.list \
+blink_led.list \
+
+BIN_FILES += \
+blink_led.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: testrecep.elf secondary-outputs
+main-build: blink_led.elf secondary-outputs
 
 # Tool invocations
-testrecep.elf testrecep.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "testrecep.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="testrecep.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+blink_led.elf blink_led.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "blink_led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,17 +73,22 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-testrecep.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "testrecep.list"
+blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "blink_led.list"
 	@echo 'Finished building: $@'
+	@echo ' '
+
+blink_led.bin: blink_led.elf
+	arm-none-eabi-objcopy -O binary "blink_led.elf" "blink_led.bin"
+	@echo 'Finished building binary: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout testrecep.elf testrecep.list testrecep.map
+	-$(RM) blink_led.elf blink_led.list blink_led.map blink_led.bin default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(BIN_FILES)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
@@ -92,3 +100,4 @@ warn-no-linker-script-specified:
 .PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
 
 -include ../makefile.targets
+
