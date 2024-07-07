@@ -1,5 +1,0 @@
-../Core/Src/mqtt_client.c:7:6:mqtt_init	24	static
-../Core/Src/mqtt_client.c:17:6:mqtt_connect	16	static
-../Core/Src/mqtt_client.c:24:6:mqtt_disconnect	16	static
-../Core/Src/mqtt_client.c:31:6:mqtt_subscribe	24	static
-../Core/Src/mqtt_client.c:37:6:mqtt_publish	24	static

@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Blink_led
+BUILD_ARTIFACT_NAME := testrecep
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Blink_led.elf \
+testrecep.elf \
 
 MAP_FILES += \
-Blink_led.map \
+testrecep.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Blink_led.list \
+testrecep.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Blink_led.elf secondary-outputs
+main-build: testrecep.elf secondary-outputs
 
 # Tool invocations
-Blink_led.elf Blink_led.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projetSTM32/Blink_led/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Blink_led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projetSTM32/Blink_led/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+testrecep.elf testrecep.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "testrecep.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projetSTM32/testrecep/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="testrecep.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Blink_led.list"
+testrecep.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "testrecep.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Blink_led.elf Blink_led.list Blink_led.map default.size.stdout
+	-$(RM) default.size.stdout testrecep.elf testrecep.list testrecep.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

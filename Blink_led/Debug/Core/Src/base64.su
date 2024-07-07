@@ -1,3 +1,0 @@
-../Core/Src/base64.c:7:8:base64_decoded_size	16	static
-../Core/Src/base64.c:13:12:base64_index	24	static
-../Core/Src/base64.c:20:5:base64_decode	48	static
