@@ -55,7 +55,7 @@ void MX_USART1_UART_Init(void)
 
 }
 
-void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
+void HAL_UART_MspInit1(UART_HandleTypeDef* uartHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -85,7 +85,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
   }
 }
 
-void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
+void HAL_UART_MspDeInit2(UART_HandleTypeDef* uartHandle)
 {
 
   if(uartHandle->Instance==USART1)
