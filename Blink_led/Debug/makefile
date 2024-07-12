@@ -39,6 +39,8 @@ BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
+BIN_ARTIFACT := $(BUILD_ARTIFACT_NAME).bin
+
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
 blink_led.elf \
@@ -57,12 +59,17 @@ blink_led.list \
 all: main-build
 
 # Main-build Target
-main-build: blink_led.elf secondary-outputs
+main-build: blink_led.elf blink_led.bin secondary-outputs
 
 # Tool invocations
 blink_led.elf blink_led.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-gcc -o "blink_led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
+	@echo ' '
+
+blink_led.bin: blink_led.elf
+	arm-none-eabi-objcopy -O binary "blink_led.elf" "blink_led.bin"
+	@echo 'Finished converting $< to $@'
 	@echo ' '
 
 default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
@@ -77,7 +84,7 @@ blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 
 # Other Targets
 clean:
-	-$(RM) blink_led.elf blink_led.list blink_led.map default.size.stdout
+	-$(RM) blink_led.elf blink_led.list blink_led.map default.size.stdout blink_led.bin
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
