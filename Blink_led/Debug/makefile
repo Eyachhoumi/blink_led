@@ -33,43 +33,34 @@ $(wildcard ../makefile.defs) \
 $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
-
-BUILD_ARTIFACT_NAME := blink_led
+BUILD_ARTIFACT_NAME := Blink_led
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
-BIN_ARTIFACT := $(BUILD_ARTIFACT_NAME).bin
-
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-blink_led.elf \
+Blink_led.elf \
 
 MAP_FILES += \
-blink_led.map \
+Blink_led.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-blink_led.list \
-
+Blink_led.list \
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: blink_led.elf blink_led.bin secondary-outputs
+main-build: Blink_led.elf secondary-outputs
 
 # Tool invocations
-blink_led.elf blink_led.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "blink_led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Blink_led.elf Blink_led.map: $(OBJS) $(USER_OBJS) /home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Blink_led.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/pc/Desktop/projet_stm/blink_led/Blink_led/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Blink_led.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
-	@echo ' '
-
-blink_led.bin: blink_led.elf
-	arm-none-eabi-objcopy -O binary "blink_led.elf" "blink_led.bin"
-	@echo 'Finished converting $< to $@'
 	@echo ' '
 
 default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
@@ -77,17 +68,21 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "blink_led.list"
+Blink_led.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Blink_led.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
+# New target to convert .elf to .bin
+Blink_led.bin: Blink_led.elf
+	arm-none-eabi-objcopy -O binary $< $@
+
 # Other Targets
 clean:
-	-$(RM) blink_led.elf blink_led.list blink_led.map default.size.stdout blink_led.bin
+	-$(RM) Blink_led.elf Blink_led.list Blink_led.map default.size.stdout Blink_led.bin
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) Blink_led.bin
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
@@ -98,4 +93,3 @@ warn-no-linker-script-specified:
 
 .PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
 
--include ../makefile.targets

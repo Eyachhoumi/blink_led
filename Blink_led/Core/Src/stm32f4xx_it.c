@@ -51,7 +51,6 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-extern void Uart_isr (UART_HandleTypeDef *huart);
 
 /* USER CODE END 0 */
 
